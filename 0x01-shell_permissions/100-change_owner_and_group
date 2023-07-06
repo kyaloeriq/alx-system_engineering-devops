@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo find . -type d -exec chgrp staff, sudo find . -type f -exec chown vincent
+chown vincent:staff *
