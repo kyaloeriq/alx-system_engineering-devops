@@ -1,2 +1,2 @@
 #!/bin/bash
-chown find / -user guillaume -exec betty hello
+chown --reference=guillaume  betty hello
