@@ -1,2 +1,2 @@
 #!/bin/bash
-tal -n 1 iacta
+tal -n 1 < iacta >> iacta
