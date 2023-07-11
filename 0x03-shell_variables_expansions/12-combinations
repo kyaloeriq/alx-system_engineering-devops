@@ -1,2 +1,2 @@
 #!/bin/bash
-echo -no oo -u {a..z}{a..z}
+echo -no oo \n {a..z}{a..z}
