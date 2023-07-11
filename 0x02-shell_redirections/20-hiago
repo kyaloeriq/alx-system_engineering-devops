@@ -1,2 +1,2 @@
 #!/bin/bash
-find -i c | -delete
+tr -d "cC"
