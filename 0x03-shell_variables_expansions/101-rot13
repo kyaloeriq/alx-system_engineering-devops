@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Everyone is a proponent of strong encryption.\n" - Dorothy E. Denning | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+printf "Everyone is a proponent of strong encryption.\n - Dorothy E. Denning" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
