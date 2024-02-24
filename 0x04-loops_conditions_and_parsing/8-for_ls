@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# displays the content of the current directory
+for file in *; do
+	if [ -f "$file" ]; then
+		filename=$(basename "$file")
+		# Check if the filename contains a dash
+		if [[ "$filename" == *-* ]]; then
+			# Use parameter expansion to get the part after the first dash
+			after_dash="${filename#*-}"
+			echo "$after_dash"
+		fi
+	fi
+done
