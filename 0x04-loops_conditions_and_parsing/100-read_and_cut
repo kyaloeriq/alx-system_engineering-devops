@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# displays username, user ID, and home directory path in the file /etc/passwd
+while true; do
+	awk -F: '{print $1 ":" $3 ":" $6}' /etc/passwd
+	sleep 1
+done
