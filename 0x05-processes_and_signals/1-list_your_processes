@@ -2,6 +2,6 @@
 # displays a list of currently running processes
 while true; do
 	clear
-	ps auxf  # Display all processes in a user-oriented format with hierarchy
+	ps aux  # Display all processes in a user-oriented format with hierarchy
 	sleep 1
 done
