@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # stops 4-to_infinity_and_beyond process
 while true; do
-        echo "To infinity and beyond"
-	kill
-        sleep 2
+	pkill 4-to_infinity_and_beyond
 done
