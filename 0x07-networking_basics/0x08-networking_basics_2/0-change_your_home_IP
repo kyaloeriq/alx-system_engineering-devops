@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# script that configures an Ubuntu server
+hosts_mappings=(
+"localhost 127.0.0.2"
+"facebook.com 8.8.8.8"
+)
+# Update hosts file
+for mapping in "${hosts_mappings[@]}"; do
+read -r domain ip <<<"$mapping"
+echo "$ip $domain" | sudo tee -a /etc/hosts >/dev/null
+done
