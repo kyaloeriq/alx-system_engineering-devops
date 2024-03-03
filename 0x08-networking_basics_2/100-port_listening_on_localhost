@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
 # listens on port 98 on localhost
 import socket
 HOST = '127.0.0.1'
