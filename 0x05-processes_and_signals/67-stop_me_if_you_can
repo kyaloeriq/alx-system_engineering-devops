@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# stops 4-to_infinity_and_beyond process without using kill
+stop_process()
+{
+	if pgrep -f "7-highlander" > /dev/null; then
+		pkill -f "7-highlander"
+	fi
+}
+while true; do
+	stop_process
+	sleep 1m
+done
