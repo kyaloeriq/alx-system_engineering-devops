@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# displays To infinity and beyond indefinitely
-# I am invincible!!! when receiving a SIGTERM signal
+# Display "To infinity and beyond" indefinitely
+# Display "I am invincible!!!" when receiving a SIGTERM signal
 
 function sigterm_handler()
 {
 	echo "I am invincible!!!"
 }
+
 # Trap SIGTERM and call sigterm_handler function
 trap 'sigterm_handler' SIGTERM
+
 while true; do
-        echo "To infinity and beyond"
-        sleep 2
+	echo "To infinity and beyond"
+	sleep 2
 done
