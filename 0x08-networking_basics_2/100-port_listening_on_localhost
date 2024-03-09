@@ -1,6 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 # listens on port 98 on localhost
+
+import socket
+
 HOST = '127.0.0.1'
 PORT = 98
+
+# Create a socket object
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 s.listen()
