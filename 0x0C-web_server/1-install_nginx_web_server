@@ -1,4 +1,5 @@
-# Configure Nginx to listen on port 80 and respond with "Hello World!"
+#!/usr/bin/env bash
+# configures Nginx to listen on port 80 and respond with "Hello World!"
 cat > /etc/nginx/sites-available/default <<EOF
 server {
     listen 80 default_server;
@@ -15,8 +16,8 @@ server_name _;
 }
 EOF
 
-# Test Nginx configuration
+# tests Nginx configuration
 nginx -t
 
-# Restart Nginx without using systemctl
+# restarts Nginx without using systemctl
 kill -s HUP $(pidof nginx)
