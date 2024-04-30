@@ -1,0 +1,22 @@
+# Configure Nginx to listen on port 80 and respond with "Hello World!"
+cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+server_name _;
+
+    location / {
+        echo "Hello World!";
+    }
+}
+EOF
+
+# Test Nginx configuration
+nginx -t
+
+# Restart Nginx without using systemctl
+kill -s HUP $(pidof nginx)
