@@ -11,7 +11,7 @@ server {
 server_name _;
 
     location / {
-        echo "Hello World!";
+        return 200 "Hello World!";
     }
 }
 EOF
