@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
+# Install Nginx if not already installed
+if ! command -v nginx &>/dev/null; then
+    echo "Installing Nginx..."
+    sudo apt update
+    sudo apt install -y nginx
+fi
+
 # configures Nginx to listen on port 80 and respond with "Hello World!"
-cat > /etc/nginx/sites-available/default <<EOF
+sudo tee /etc/nginx/sites-available/default >/dev/null <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -17,7 +24,15 @@ server {
 EOF
 
 # tests Nginx configuration
-nginx -t
+sudo nginx -t
 
 # restarts Nginx without using systemctl
 kill -s HUP $(pidof nginx)
+
+# Verify Nginx is listening on port 80
+echo "Checking if Nginx is listening on port 80..."
+if sudo lsof -i :80 | grep LISTEN; then
+    echo "Nginx is listening on port 80."
+else
+    echo "Nginx is not listening on port 80. Please check the configuration."
+fi
