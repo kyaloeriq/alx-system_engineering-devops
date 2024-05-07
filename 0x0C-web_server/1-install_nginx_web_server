@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# script that installs Nginx if not already installed
+
+set -euo pipefail
+
 # Install Nginx if not already installed
 if ! command -v nginx &>/dev/null; then
     echo "Installing Nginx..."
@@ -24,4 +28,9 @@ server {
 EOF
 
 # restarts Nginx without using systemctl
-kill -s HUP $(pidof nginx)
+if pgrep -x "nginx" >/dev/null; then
+	sudo kill -s HUP $(pgrep -x "nginx")
+	echo "Nginx restarted."
+else
+	echo "Nginx is not running. No need to restart."
+fi
