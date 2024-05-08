@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bash script that configures a server
+# Script to configure Nginx server on Ubuntu 20.04 LTS
 set -euo pipefail
 
 # Check if Nginx is installed

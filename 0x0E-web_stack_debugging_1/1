@@ -1,12 +1,1 @@
-./0-nginx_likes_port_80: line 3: nginx: command not found
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-sudo: netstat: command not found
-tee: /etc/nginx/sites-available/default: No such file or directory
-ln: target '/etc/nginx/sites-enabled/' is not a directory: No such file or directory
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-Nginx configured to listen on port 80 for all IPv4 addresses.
-cat: /var/www/html/index.nginx-debian.html: No such file or directory
+Nginx is not installed. Please install Nginx and try again.
