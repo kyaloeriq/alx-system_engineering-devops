@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Bash script that configures a server
-nginx -t
+set -euo pipefail
+
+# Check if Nginx is installed
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Please install Nginx and try again."
+    exit 1
+fi
 
 # Starts Nginx service if it's not running
 if ! systemctl is-active --quiet nginx; then
@@ -8,12 +14,12 @@ if ! systemctl is-active --quiet nginx; then
 fi
 
 # Checks if port 80 is already in use
-if sudo netstat -tuln | grep ':80\s'; then
+if sudo netstat -tuln | grep -q 'nginx.*:80'; then
     echo "Port 80 is already in use by another service."
     exit 1
 fi
 
-# Ensures Nginx configuration includes a server block for port 80
+# Configure Nginx to listen on port 80 for all IPv4 addresses
 cat << EOF | sudo tee /etc/nginx/sites-available/default > /dev/null
 server {
     listen 80 default_server;
