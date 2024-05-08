@@ -44,7 +44,10 @@ fi
 # Reloads Nginx to apply changes
 sudo systemctl reload nginx
 
-echo "Nginx configured to listen on port 80 for all IPv4 addresses."
-
-# Output Nginx default welcome page content
-cat /var/www/html/index.nginx-debian.html
+# Test if Nginx serves the default page correctly on port 80
+response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+if [[ $response_code -eq 200 ]]; then
+    echo "Nginx is serving the default page correctly on port 80."
+else
+    echo "Nginx is not serving the default page correctly on port 80. HTTP response code: $response_code"
+fi
