@@ -35,7 +35,9 @@ if ! [ -e /etc/nginx/sites-enabled/default ]; then
     sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 fi
 
-# Reload Nginx to apply changes
+# Reloads Nginx to apply changes
 sudo systemctl reload nginx
 
+# Creates a simple HTML file
+echo "<html><head><title>Test Page</title></head><body><h1>Test Page</h1><p>This is a test page served by Nginx on port 80.</p></body></html>" | sudo tee /var/www/html/index.html > /dev/null
 echo "Nginx configured to listen on port 80 for all IPv4 addresses."
