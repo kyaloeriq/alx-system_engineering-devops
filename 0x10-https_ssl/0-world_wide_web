@@ -3,9 +3,9 @@
 # Function to display information about a subdomain
 display_info() {
     sub_domain=$1
-    record_type=$(dig +short -t A "$sub_domain.$domain" | awk '{ if(NF==0) print "CNAME"; else print "A" }')
-    destination=$(dig +short "$sub_domain.$domain" | awk 'NR==1{print}')
-    echo "The subdomain $sub_domain is a $record_type record and points to $destination"
+    answer_section=$(dig +short "$sub_domain.$domain" | awk 'NR==1{print}')
+    echo ";; ANSWER SECTION:"
+    echo "$sub_domain.$domain.   87  IN  A   $answer_section"
 }
 
 # Domain to audit
