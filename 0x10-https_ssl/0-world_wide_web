@@ -11,7 +11,21 @@ display_info() {
     if [[ -z "$answer_section" ]]; then
         echo "No DNS records found for $full_domain"
     else
-        echo "The subdomain $sub_domain is a A record and points to $answer_section"
+        echo "$answer_section"
+    fi
+}
+
+# Function to handle specific subdomain checks
+check_special_subdomains() {
+    local sub_domain="$1"
+    local expected_ip="$2"
+    local actual_ip
+    actual_ip=$(dig +short "$sub_domain.$domain" | awk 'NR==1{print}')
+
+    if [[ "$actual_ip" == "$expected_ip" ]]; then
+        echo "Your subdomain $sub_domain points to your $sub_domain server IP"
+    else
+        echo "Expected $expected_ip, but got $actual_ip"
     fi
 }
 
@@ -33,6 +47,10 @@ if [[ -z "$sub_domain" ]]; then
 else
     sub_domains=("$sub_domain")
 fi
+
+# Define expected IPs for special subdomains
+declare -A expected_ips
+expected_ips=( ["www"]="52.201.221.182" ["web-01"]="54.162.48.51" ["web-02"]="54.160.91.89" )
 
 # Loop through subdomains and display information
 for sub in "${sub_domains[@]}"; do
