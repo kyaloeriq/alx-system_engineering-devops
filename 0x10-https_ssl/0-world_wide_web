@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+# Configure your domain zone so that the subdomain www points to your load-balancer IP
 
-# Function to display information about a subdomain
 display_info() {
     local sub_domain="$1"
     local full_domain="$sub_domain.$domain"
