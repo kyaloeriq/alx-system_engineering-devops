@@ -2,20 +2,35 @@
 
 # Function to display information about a subdomain
 display_info() {
-    sub_domain=$1
-    answer_section=$(dig +short "$sub_domain.$domain" | awk 'NR==1{print}')
-    echo ";; ANSWER SECTION:"
-    echo "$sub_domain.$domain.   87  IN  A   $answer_section"
+    local sub_domain="$1"
+    local full_domain="$sub_domain.$domain"
+    local answer_section
+    answer_section=$(dig +short "$full_domain" | awk 'NR==1{print}')
+
+    if [[ -z "$answer_section" ]]; then
+        echo ";; No DNS records found for $full_domain"
+    else
+        local ttl
+        ttl=$(dig "$full_domain" | awk '/^;; ANSWER SECTION:$/,/^$/ { if($1 == "'$full_domain'.") print $2; exit }')
+        echo ";; ANSWER SECTION:"
+        echo "$full_domain.   $ttl  IN  A   $answer_section"
+    fi
 }
 
 # Domain to audit
 domain="$1"
 
+# Check if domain is provided
+if [[ -z "$domain" ]]; then
+    echo "Usage: $0 <domain> [sub_domain]"
+    exit 1
+fi
+
 # Subdomain to audit (optional)
 sub_domain="$2"
 
 # If sub_domain is not provided, audit default subdomains
-if [ -z "$sub_domain" ]; then
+if [[ -z "$sub_domain" ]]; then
     sub_domains=("www" "lb-01" "web-01" "web-02")
 else
     sub_domains=("$sub_domain")
