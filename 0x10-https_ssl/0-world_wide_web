@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Configure your domain zone so that the subdomain www points to your load-balancer IP
 
+# Function to display information about a subdomain
 display_info() {
     local sub_domain="$1"
     local full_domain="$sub_domain.$domain"
@@ -8,12 +9,9 @@ display_info() {
     answer_section=$(dig +short "$full_domain" | awk 'NR==1{print}')
 
     if [[ -z "$answer_section" ]]; then
-        echo ";; No DNS records found for $full_domain"
+        echo "No DNS records found for $full_domain"
     else
-        local ttl
-        ttl=$(dig "$full_domain" | awk '/^;; ANSWER SECTION:$/,/^$/ { if($1 == "'$full_domain'.") print $2; exit }')
-        echo ";; ANSWER SECTION:"
-        echo "$full_domain.   $ttl  IN  A   $answer_section"
+        echo "The subdomain $sub_domain is a A record and points to $answer_section"
     fi
 }
 
