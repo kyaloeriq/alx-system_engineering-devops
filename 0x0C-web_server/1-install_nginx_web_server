@@ -3,12 +3,15 @@
 
 set -euo pipefail
 
-# Install Nginx if not already installed
+# Installs Nginx if not already installed
 if ! command -v nginx &>/dev/null; then
     echo "Installing Nginx..."
     sudo apt update
     sudo apt install -y nginx
 fi
+
+# Creates a simple HTML file that Nginx will serve
+echo "Hello World!" | sudo tee /var/www/html/index.html >/dev/null
 
 # configures Nginx to listen on port 80 and respond with "Hello World!"
 sudo tee /etc/nginx/sites-available/default >/dev/null <<EOF
@@ -22,7 +25,7 @@ server {
     server_name _;
 
     location / {
-        echo "Hello World!";
+        try_files \$uri \$uri/ =404;
     }
 }
 EOF
