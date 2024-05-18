@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Client configuration file
-Host 54.210.50.189
+Host 34.203.201.29
 	IdentityFile ~/.ssh/school
 	PreferredAuthentications publickey
 	PasswordAuthentication no
