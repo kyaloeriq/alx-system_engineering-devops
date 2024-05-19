@@ -5,9 +5,9 @@ file { '/root/.ssh/config':
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
-  content => "
+  content => @("EOF"),
     Host *
       IdentityFile ~/.ssh/school
       PasswordAuthentication no
-  ",
+    | EOF
 }
