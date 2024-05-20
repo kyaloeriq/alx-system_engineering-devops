@@ -54,3 +54,12 @@ else
     sudo nginx
     echo "Nginx started."
 fi
+
+# Check the redirect to ensure it returns a 301 status
+redirect_status=$(curl -o /dev/null -s -w "%{http_code}" http://localhost/redirect_me)
+if [ "$redirect_status" -eq 301 ]; then
+    echo "Redirect is correctly configured, returned status: $redirect_status"
+else
+    echo "Redirect is not correctly configured, returned status: $redirect_status"
+    exit 1
+fi
