@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Script to configure Nginx on a new Ubuntu machine to serve a page and set up a redirect
+
+set -euo pipefail
+
+# Function to install Nginx on Debian-based systems
+install_nginx_debian() {
+    echo "Installing Nginx on Debian-based system..."
+    sudo apt update
+    sudo apt install -y nginx
+}
+
+# Check if Nginx is installed
+if ! command -v nginx &>/dev/null; then
+    # Detect the OS and install Nginx accordingly
+    if [[ -f /etc/debian_version ]]; then
+        install_nginx_debian
+    else
+        echo "Unsupported operating system. Please install Nginx manually."
+        exit 1
+    fi
+fi
+
+# Create a simple HTML file that Nginx will serve
+echo "Hello World!" | sudo tee /var/www/html/index.html >/dev/null
+
+# Configure Nginx to listen on port 80 and respond with "Hello World!" and set up a redirect
+sudo tee /etc/nginx/sites-available/default >/dev/null <<EOF
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location /redirect_me {
+        return 301 http://www.example.com;
+    }
+}
+EOF
+
+# Restart Nginx using nginx command
+if pgrep -x "nginx" >/dev/null; then
+    sudo nginx -s reload
+    echo "Nginx configuration reloaded."
+else
+    echo "Nginx is not running. Starting Nginx..."
+    sudo nginx
+    echo "Nginx started."
+fi
