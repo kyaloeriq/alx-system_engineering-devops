@@ -41,7 +41,6 @@ server {
     location / {
         try_files \$uri \$uri/ =404;
     }
-
     error_page 404 /404.html;
     location = /404.html {
         internal;
@@ -58,19 +57,18 @@ else
     sudo nginx
     echo "Nginx started."
 fi
-
 # Check the custom 404 page to ensure it returns a 404 status and contains the correct content
-error_page_content=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/nonexistentpage)
-if [ "$error_page_content" -eq 404 ]; then
-    echo "Custom 404 page is correctly configured, returned status: $error_page_content"
-    actual_content=$(curl -s http://localhost/nonexistentpage)
-    if [[ "$actual_content" == *"Ceci n'est pas une page"* ]]; then
+error_page_status=$(curl -o /dev/null -s -w "%{http_code}" http://localhost/nonexistentpage)
+if [ "$error_page_status" -eq 404 ]; then
+    echo "Custom 404 page is correctly configured, returned status: $error_page_status"
+    error_page_content=$(curl -s http://localhost/nonexistentpage)
+    if [[ "$error_page_content" == *"Ceci n'est pas une page"* ]]; then
         echo "Custom 404 page contains the correct content."
     else
         echo "Custom 404 page does not contain the correct content."
         exit 1
     fi
 else
-    echo "Custom 404 page is not correctly configured, returned status: $error_page_content"
+    echo "Custom 404 page is not correctly configured, returned status: $error_page_status"
     exit 1
 fi
