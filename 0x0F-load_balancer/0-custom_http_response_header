@@ -11,25 +11,19 @@ sudo apt-get install -y nginx
 # Get the hostname of the current machine
 HOSTNAME=$(hostname)
 
-# Add the custom header configuration to the Nginx default server block
-sudo bash -c "cat > /etc/nginx/conf.d/custom_header.conf <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+# Backup the default Nginx configuration file
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-
-    server_name _;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-        add_header X-Served-By '$HOSTNAME';
-    }
-}
-EOF"
+# Modify the default server block to add the custom header
+sudo sed -i '/server_name _;/a \    add_header X-Served-By '"$HOSTNAME"';' /etc/nginx/sites-available/default
 
 # Restart Nginx to apply the changes
 sudo systemctl restart nginx
 
-echo "Nginx has been configured with a custom header 'X-Served-By: $HOSTNAME'"
+# Check the Nginx status
+NGINX_STATUS=$(sudo systemctl is-active nginx)
+if [ "$NGINX_STATUS" == "active" ]; then
+    echo "Nginx has been configured with a custom header 'X-Served-By: $HOSTNAME'"
+else
+    echo "Failed to configure Nginx"
+fi
