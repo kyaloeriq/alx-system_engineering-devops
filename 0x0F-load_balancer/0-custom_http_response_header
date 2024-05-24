@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
+# configures a brand new Ubuntu machine
 # Ignore SC2154 for shellcheck
 # shellcheck disable=SC2154
 
-# Update the package list
+# Updates the package list
 sudo apt-get update
 
-# Install Nginx
+# Installs Nginx
 sudo apt-get install -y nginx
 
-# Get the hostname of the current machine
+# Gets the hostname of the current machine
 HOSTNAME=$(hostname)
 
 # Backup the default Nginx configuration file
