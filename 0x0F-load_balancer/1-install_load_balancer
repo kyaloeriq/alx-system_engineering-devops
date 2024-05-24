@@ -52,3 +52,10 @@ EOF
 # Enable and start HAProxy service
 sudo systemctl enable haproxy
 sudo systemctl restart haproxy
+
+# Test the load balancer functionality
+echo "Testing load balancer functionality..."
+echo "Expecting response from web-01:"
+curl -Is 52.201.221.182 | grep -i "X-Served-By"
+echo "Expecting response from web-02:"
+curl -Is 52.201.221.182 | grep -i "X-Served-By"
