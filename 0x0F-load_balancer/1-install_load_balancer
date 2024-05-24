@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Installs and configures HAproxy
+set -euo pipefail
+
 # Install HAProxy
 sudo apt-get update
 sudo apt-get install -y haproxy
@@ -27,17 +30,25 @@ defaults
 
 frontend http_front
     bind *:80
+    # Restrict access to HAProxy stats page
+    acl localhost src 127.0.0.1
+    acl localnet src 192.168.0.0/16
+    acl localnet src fc00::/7
+    acl localnet src fe80::/10
+    acl trusted_ips src 10.0.0.0/8 172.16.0.0/12
+    http-request allow if localhost
+    http-request allow if localnet
+    http-request allow if trusted_ips
+    http-request deny
     stats uri /haproxy?stats
     default_backend http_back
 
 backend http_back
     balance roundrobin
-    server web-01 [462701]-web-01:80 check
-    server web-02 [462701]-web-02:80 check
+    server web-01 34.203.201.29:80 check
+    server web-02 54.160.91.89:80 check
 EOF
 
-# Enable HAProxy init script
+# Enable and start HAProxy service
 sudo systemctl enable haproxy
-
-# Restart HAProxy to apply the changes
 sudo systemctl restart haproxy
