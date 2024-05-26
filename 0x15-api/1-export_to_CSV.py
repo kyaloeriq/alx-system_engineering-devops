@@ -1,63 +1,59 @@
 #!/usr/bin/python3
-"""Python script to fetch user, TODO data from an API and export it to CSV format"""
-
-import csv
 import requests
 import sys
+import csv
 
-BASE_URL = 'https://jsonplaceholder.typicode.com'
-
-
-def fetch_user_data(employee_id):
+def get_employee_todo_progress(employee_id):
     """
-    Fetch the user details for a given employee ID.
+    Fetch and display the TODO list progress for a given employee ID.
 
     Args:
-        employee_id (int): The ID of the employee.
+        employee_id (int): The ID of the employee 
+
+    Returns:
+        None
     """
-    try:
-        response = requests.get(f'{BASE_URL}/users/{employee_id}')
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        print(f'Error fetching user data: {e}')
-        return None
+    # Define the base URL for the API
+    base_url = 'https://jsonplaceholder.typicode.com'
 
+    # Fetch employee details
+    user_url = f'{base_url}/users/{employee_id}'
+    user_response = requests.get(user_url)
 
-def fetch_todo_data(employee_id):
-    """
-    Fetch the TODO list for a given employee ID.
+    # Check if the employee exists
+    if user_response.status_code != 200:
+        print(f'Employee with ID {employee_id} not found.')
+        return
 
-    Args:
-        employee_id (int): The ID of the employee.
-    """
-    try:
-        response = requests.get(f'{BASE_URL}/todos?userId={employee_id}')
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        print(f'Error fetching TODO data: {e}')
-        return []
+    user_data = user_response.json()
+    employee_name = user_data['name']
 
+    # Fetch TODO list for the employee
+    todos_url = f'{base_url}/todos?userId={employee_id}'
+    todos_response = requests.get(todos_url)
+    todos_data = todos_response.json()
 
-def export_to_csv(employee_id, employee_name, todos):
-    """
-    Export TODO data to a CSV file.
+    # Filter completed tasks
+    completed_tasks = [todo for todo in todos_data if todo['completed']]
+    number_of_done_tasks = len(completed_tasks)
+    total_number_of_tasks = len(todos_data)
 
-    Args:
-        employee_id (int): The ID of the employee.
-        employee_name (str): The name of the employee.
-        todos (list): A list of dictionaries containing TODO items.
-    """
+    # Print the progress
+    print(
+        f'Employee {employee_name} is done with tasks('
+        f'{number_of_done_tasks}/{total_number_of_tasks}):'
+    )
+    for task in completed_tasks:
+        print(f'\t {task["title"]}')
+
+    # Export data to CSV
     csv_filename = f'{employee_id}.csv'
     with open(csv_filename, mode='w', newline='') as csv_file:
-        fieldnames = [
-                'USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE'
-                ]
+        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         writer.writeheader()
-        for todo in todos:
+        for todo in todos_data:
             writer.writerow({
                 'USER_ID': employee_id,
                 'USERNAME': employee_name,
@@ -67,42 +63,17 @@ def export_to_csv(employee_id, employee_name, todos):
 
     print(f'TODO list data exported to {csv_filename}')
 
-
-def get_employee_todo_progress(employee_id):
-    """
-    Fetch and display the TODO list progress for a given ID.
-
-    Args:
-        employee_id (int): The ID of the employee.
-    """
-    user_data = fetch_user_data(employee_id)
-    if not user_data:
-        print(f'Employee with ID {employee_id} not found.')
-        return
-
-    employee_name = user_data['name']
-    todos = fetch_todo_data(employee_id)
-
-    completed_tasks = [todo for todo in todos if todo['completed']]
-    number_of_done_tasks = len(completed_tasks)
-    total_number_of_tasks = len(todos)
-
-    print(f'Employee {employee_name} is done with tasks (
-            {number_of_done_tasks}/{total_number_of_tasks}
-            ):')
-    for task in completed_tasks:
-        print(f'\t {task["title"]}')
-
-    export_to_csv(employee_id, employee_name, todos)
-
-
 def main():
     """
-    Handle command-line arguments and initiate the process
+    Function to handle command-line arguments and initiate fetching TODO list progress.
+
+    Args:
+        None
 
     Returns:
         None
     """
+    # Ensure an employee ID is provided as a command-line argument
     if len(sys.argv) != 2:
         print('Usage: python script.py <employee_id>')
         sys.exit(1)
@@ -113,8 +84,17 @@ def main():
         print('Employee ID must be an integer.')
         sys.exit(1)
 
+    # Get and display the employee TODO list progress
     get_employee_todo_progress(employee_id)
 
-
 if __name__ == "__main__":
+    """
+    This block ensures script can be used as a module and as a standalone script.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     main()
