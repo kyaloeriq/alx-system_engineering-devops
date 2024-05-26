@@ -1,6 +1,13 @@
 #!/usr/bin/python3
 """
-Python script to fetch user and TODO data from an API and export it to CSV format
+Python script to fetch user, TODO data from an API and export it to CSV format
+
+Modules:
+    fetch_user_data(employee_id): Fetch user details for a given employee ID.
+    fetch_todo_data(employee_id): Fetch TODO list for a given employee ID.
+    export_to_csv(employee_id, employee_name, todos): Export TODO data to a CSV file.
+    get_employee_todo_progress(employee_id): Fetch and display TODO list progress.
+    main(): Handle command-line arguments and initiate the process.
 """
 
 import csv
