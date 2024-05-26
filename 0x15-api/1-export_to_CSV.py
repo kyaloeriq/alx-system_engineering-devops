@@ -11,7 +11,7 @@ BASE_URL = 'https://jsonplaceholder.typicode.com'
 
 def fetch_user_data(employee_id):
     """
-    Fetch the user details for a given employee
+    Fetch the user details for a given employee ID
     """
     try:
         response = requests.get(f'{BASE_URL}/users/{employee_id}')
@@ -81,7 +81,7 @@ def get_employee_todo_progress(employee_id):
 
 def main():
     """
-    Function to handle command-line arguments.
+    Handle command-line arguments and initiate the process
     """
     if len(sys.argv) != 2:
         print('Usage: python script.py <employee_id>')
