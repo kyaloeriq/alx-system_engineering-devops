@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Python script to export data in CSV format.
+Python script to fetch user and TODO data from an API and export it to CSV format
 """
 
 import csv
@@ -8,6 +8,7 @@ import requests
 import sys
 
 BASE_URL = 'https://jsonplaceholder.typicode.com'
+
 
 def fetch_user_data(employee_id):
     """
@@ -21,6 +22,7 @@ def fetch_user_data(employee_id):
         print(f'Error fetching user data: {e}')
         return None
 
+
 def fetch_todo_data(employee_id):
     """
     Fetch the TODO list for a given employee ID
@@ -32,6 +34,7 @@ def fetch_todo_data(employee_id):
     except requests.RequestException as e:
         print(f'Error fetching TODO data: {e}')
         return []
+
 
 def export_to_csv(employee_id, employee_name, todos):
     """
@@ -54,6 +57,7 @@ def export_to_csv(employee_id, employee_name, todos):
             })
 
     print(f'TODO list data exported to {csv_filename}')
+
 
 def get_employee_todo_progress(employee_id):
     """
@@ -79,6 +83,7 @@ def get_employee_todo_progress(employee_id):
 
     export_to_csv(employee_id, employee_name, todos)
 
+
 def main():
     """
     Handle command-line arguments and initiate the process
@@ -94,6 +99,7 @@ def main():
         sys.exit(1)
 
     get_employee_todo_progress(employee_id)
+
 
 if __name__ == "__main__":
     main()
