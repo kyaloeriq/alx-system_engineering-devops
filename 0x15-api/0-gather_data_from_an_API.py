@@ -44,13 +44,7 @@ def get_employee_todo_progress(employee_id):
 
 def main():
     """
-    Function to handle command-line arguments and initiate fetching TODO list progress.
-
-    Args:
-        None
-
-    Returns:
-        None
+    Function to handle command-line arguments
     """
     # Ensure an employee ID is provided as a command-line argument
     if len(sys.argv) != 2:
@@ -69,12 +63,6 @@ def main():
 
 if __name__ == "__main__":
     """
-    This block ensures script can be used as a module and as a standalone script.
-
-    Args:
-        None
-
-    Returns:
-        None
+    This block ensures script can be used as a module
     """
     main()
