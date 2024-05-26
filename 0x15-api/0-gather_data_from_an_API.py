@@ -1,18 +1,12 @@
 #!/usr/bin/python3
-# Python script that, returns information about his/her TODO list progress
+"""Python script returns information about his/her TODO list progress"""
 import requests
 import sys
 
 
-def get_employee_todo_progress(employee_id)
+def get_employee_todo_progress(employee_id):
     """
-    Fetch and display the TODO list progress for a given employee ID.
-
-    Args:
-        employee_id (int): The ID of the employee 
-
-    Returns:
-        None
+    Fetch and display the TODO list progress for a given ID
     """
     # Define the base URL for the API
     base_url = 'https://jsonplaceholder.typicode.com'
