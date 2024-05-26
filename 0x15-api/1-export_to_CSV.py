@@ -6,6 +6,7 @@ import csv
 import requests
 import sys
 
+
 def get_employee_todo_progress(employee_id):
     """
     Fetch and display the TODO list progress for a given ID
@@ -46,7 +47,9 @@ def get_employee_todo_progress(employee_id):
     # Export data to CSV
     csv_filename = f'{employee_id}.csv'
     with open(csv_filename, mode='w', newline='') as csv_file:
-        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+        fieldnames = [
+                'USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE'
+                ]
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         writer.writeheader()
@@ -59,6 +62,7 @@ def get_employee_todo_progress(employee_id):
             })
 
     print(f'TODO list data exported to {csv_filename}')
+
 
 def main():
     """
@@ -77,6 +81,7 @@ def main():
 
     # Get and display the employee TODO list progress
     get_employee_todo_progress(employee_id)
+
 
 if __name__ == "__main__":
     """
