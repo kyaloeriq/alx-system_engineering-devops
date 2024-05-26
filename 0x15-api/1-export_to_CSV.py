@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Python script to fetch user, TODO data from an API and export it to CSV format
+Python script to fetch user, TODO data from an API and export it to CSV format.
 
 Modules:
     fetch_user_data(employee_id): Fetch user details for a given employee ID.
@@ -19,7 +19,10 @@ BASE_URL = 'https://jsonplaceholder.typicode.com'
 
 def fetch_user_data(employee_id):
     """
-    Fetch the user details for a given employee ID
+    Fetch the user details for a given employee ID.
+
+    Args:
+        employee_id (int): The ID of the employee.
     """
     try:
         response = requests.get(f'{BASE_URL}/users/{employee_id}')
@@ -32,7 +35,10 @@ def fetch_user_data(employee_id):
 
 def fetch_todo_data(employee_id):
     """
-    Fetch the TODO list for a given employee ID
+    Fetch the TODO list for a given employee ID.
+
+    Args:
+        employee_id (int): The ID of the employee.
     """
     try:
         response = requests.get(f'{BASE_URL}/todos?userId={employee_id}')
@@ -45,7 +51,12 @@ def fetch_todo_data(employee_id):
 
 def export_to_csv(employee_id, employee_name, todos):
     """
-    Export TODO data to a CSV file
+    Export TODO data to a CSV file.
+
+    Args:
+        employee_id (int): The ID of the employee.
+        employee_name (str): The name of the employee.
+        todos (list): A list of dictionaries containing TODO items.
     """
     csv_filename = f'{employee_id}.csv'
     with open(csv_filename, mode='w', newline='') as csv_file:
@@ -69,6 +80,9 @@ def export_to_csv(employee_id, employee_name, todos):
 def get_employee_todo_progress(employee_id):
     """
     Fetch and display the TODO list progress for a given ID.
+
+    Args:
+        employee_id (int): The ID of the employee.
     """
     user_data = fetch_user_data(employee_id)
     if not user_data:
@@ -94,6 +108,9 @@ def get_employee_todo_progress(employee_id):
 def main():
     """
     Handle command-line arguments and initiate the process
+
+    Returns:
+        None
     """
     if len(sys.argv) != 2:
         print('Usage: python script.py <employee_id>')
