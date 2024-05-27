@@ -31,10 +31,10 @@ def get_employee_todo_progress(employee_id):
     todos_response = requests.get(todos_url)
     todos_data = todos_response.json()
 
-    # Filter completed tasks
+    # Ensure all tasks are printed
+    total_number_of_tasks = len(todos_data)
     completed_tasks = [todo for todo in todos_data if todo['completed']]
     number_of_done_tasks = len(completed_tasks)
-    total_number_of_tasks = len(todos_data)
 
     # Print the progress
     print(
