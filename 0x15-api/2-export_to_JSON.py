@@ -9,14 +9,7 @@ import sys
 
 def get_employee_todo_progress(employee_id):
     """
-    Fetch and display the TODO list progress for a given employee ID,
-    and export the data to a JSON file.
-
-    Args:
-        employee_id (int): The ID of the employee 
-
-    Returns:
-        None
+    Fetch and display the TODO list progress for a given employee ID
     """
     # Define the base URL for the API
     base_url = 'https://jsonplaceholder.typicode.com'
