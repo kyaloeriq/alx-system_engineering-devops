@@ -52,6 +52,7 @@ def get_all_employees_todo_progress():
 
     print(f'TODO list data for all employees exported to {json_filename}')
 
+
 def main():
     """
     Function to initiate fetching TODO list progress for all employees.
@@ -59,14 +60,9 @@ def main():
     # Get and display the employee TODO list progress for all employees
     get_all_employees_todo_progress()
 
+
 if __name__ == "__main__":
     """
-    This block ensures script can be used as a module and as a standalone script.
-
-    Args:
-        None
-
-    Returns:
-        None
+    Block ensures script can be used as a module
     """
     main()
