@@ -8,15 +8,15 @@ if ! command -v nginx &> /dev/null; then
     exit 1
 fi
 
-# Starts Nginx service if it's not running
-if ! systemctl is-active --quiet nginx; then
-    sudo systemctl start nginx
-fi
-
 # Checks if port 80 is already in use
 if sudo lsof -i :80 | grep -q LISTEN; then
     echo "Port 80 is already in use by another service."
     exit 1
+fi
+
+# Starts Nginx service if it's not running
+if ! systemctl is-active --quiet nginx; then
+    sudo systemctl start nginx
 fi
 
 # Configure Nginx to listen on port 80 for all IPv4 and IPv6 addresses
