@@ -19,6 +19,10 @@ if ! systemctl is-active --quiet nginx; then
     sudo systemctl start nginx
 fi
 
+# Remove any existing custom configurations
+sudo rm -f /etc/nginx/sites-enabled/*
+sudo rm -f /etc/nginx/sites-available/*
+
 # Ensure the default Nginx index page is present and contains the expected content
 default_page='/var/www/html/index.nginx-debian.html'
 default_content='<!DOCTYPE html>
@@ -48,9 +52,7 @@ Commercial support is available at
 </html>'
 
 # Write the default content to the file if it does not exist or does not contain the expected content
-if ! [ -f "$default_page" ] || ! grep -q "Welcome to nginx!" "$default_page"; then
-    echo "$default_content" | sudo tee "$default_page" > /dev/null
-fi
+echo "$default_content" | sudo tee "$default_page" > /dev/null
 
 # Configure Nginx to listen on port 80 for all IPv4 and IPv6 addresses
 sudo tee /etc/nginx/sites-available/default > /dev/null << 'EOF'
@@ -69,10 +71,8 @@ server {
 }
 EOF
 
-# Enables the default server block if it's not already enabled
-if ! [ -e /etc/nginx/sites-enabled/default ]; then
-    sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-fi
+# Enable the default site by creating a symbolic link
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 # Reloads Nginx to apply changes
 sudo systemctl reload nginx
