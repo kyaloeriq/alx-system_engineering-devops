@@ -1,27 +1,30 @@
 #!/usr/bin/env bash
 # Script to configure Nginx server on Ubuntu 20.04 LTS
-set -euo pipefail
 
 # Check if Nginx is installed
 if ! command -v nginx &> /dev/null; then
-    echo "Nginx is not installed. Please install Nginx and try again."
+    echo "Error: Nginx is not installed. Please install Nginx and try again."
     exit 1
 fi
 
-# Checks if port 80 is already in use
-if sudo lsof -i :80 | grep -q LISTEN; then
-    echo "Port 80 is already in use by another service."
+# Check if port 80 is already in use
+if netstat -tuln | grep -qE '\s0.0.0.0:80\s' || netstat -tuln | grep -qE ':::80\s'; then
+    echo "Error: Port 80 is already in use by another service."
     exit 1
 fi
 
-# Starts Nginx service if it's not running
-if ! systemctl is-active --quiet nginx; then
-    sudo systemctl start nginx
+# Start Nginx service if it's not running
+if ! pgrep nginx &> /dev/null; then
+    echo "Starting Nginx service..."
+    sudo service nginx start
+    echo "Nginx service started."
 fi
 
 # Remove any existing custom configurations
+echo "Removing existing custom configurations..."
 sudo rm -f /etc/nginx/sites-enabled/*
 sudo rm -f /etc/nginx/sites-available/*
+echo "Existing custom configurations removed."
 
 # Ensure the default Nginx index page is present and contains the expected content
 default_page='/var/www/html/index.nginx-debian.html'
@@ -52,9 +55,12 @@ Commercial support is available at
 </html>'
 
 # Write the default content to the file if it does not exist or does not contain the expected content
+echo "Writing default Nginx index page..."
 echo "$default_content" | sudo tee "$default_page" > /dev/null
+echo "Default Nginx index page written."
 
 # Configure Nginx to listen on port 80 for all IPv4 and IPv6 addresses
+echo "Configuring Nginx to listen on port 80..."
 sudo tee /etc/nginx/sites-available/default > /dev/null << 'EOF'
 server {
     listen 80 default_server;
@@ -70,20 +76,26 @@ server {
     }
 }
 EOF
+echo "Nginx configured to listen on port 80."
 
 # Enable the default site by creating a symbolic link
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+echo "Enabling the default site..."
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
-# Reloads Nginx to apply changes
-sudo systemctl reload nginx
+# Reload Nginx to apply changes
+echo "Reloading Nginx..."
+sudo service nginx reload
+echo "Nginx reloaded."
 
 # Test if Nginx serves the default page correctly on port 80
+echo "Testing if Nginx serves the default page correctly on port 80..."
 response_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
 if [[ $response_code -eq 200 ]]; then
     echo "Nginx is serving the default page correctly on port 80."
 else
-    echo "Nginx is not serving the default page correctly on port 80. HTTP response code: $response_code"
+    echo "Error: Nginx is not serving the default page correctly on port 80. HTTP response code: $response_code"
 fi
 
 # Print the content of the default page to verify
+echo "Printing the content of the default page..."
 curl http://localhost

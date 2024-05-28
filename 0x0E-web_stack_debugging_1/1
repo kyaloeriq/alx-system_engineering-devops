@@ -1,4 +1,1 @@
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
-System has not been booted with systemd as init system (PID 1). Can't operate.
-Failed to connect to bus: Host is down
+bash: ./0-nginx_likes_port_80: Permission denied
