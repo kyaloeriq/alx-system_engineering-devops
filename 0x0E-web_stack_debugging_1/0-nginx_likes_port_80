@@ -19,11 +19,9 @@ if ! systemctl is-active --quiet nginx; then
     sudo systemctl start nginx
 fi
 
-# Ensure the default Nginx index page is present
+# Ensure the default Nginx index page is present and contains the expected content
 default_page='/var/www/html/index.nginx-debian.html'
-if ! [ -f "$default_page" ]; then
-    sudo tee "$default_page" > /dev/null << 'EOF'
-<!DOCTYPE html>
+default_content='<!DOCTYPE html>
 <html>
 <head>
 <title>Welcome to nginx!</title>
@@ -47,8 +45,11 @@ Commercial support is available at
 
 <p><em>Thank you for using nginx.</em></p>
 </body>
-</html>
-EOF
+</html>'
+
+# Write the default content to the file if it does not exist or does not contain the expected content
+if ! [ -f "$default_page" ] || ! grep -q "Welcome to nginx!" "$default_page"; then
+    echo "$default_content" | sudo tee "$default_page" > /dev/null
 fi
 
 # Configure Nginx to listen on port 80 for all IPv4 and IPv6 addresses
@@ -83,3 +84,6 @@ if [[ $response_code -eq 200 ]]; then
 else
     echo "Nginx is not serving the default page correctly on port 80. HTTP response code: $response_code"
 fi
+
+# Print the content of the default page to verify
+curl http://localhost
