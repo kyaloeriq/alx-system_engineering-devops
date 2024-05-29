@@ -8,6 +8,14 @@ if ! command -v nginx &> /dev/null; then
 fi
 
 # Check if port 80 is already in use
+echo "Checking if port 80 is in use..."
+if sudo lsof -i:80 &> /dev/null; then
+    echo "Port 80 is in use. Stopping any processes using port 80..."
+    sudo fuser -k 80/tcp
+    echo "Processes using port 80 stopped."
+fi
+
+# Check if port 80 is already in use
 if netstat -tuln | grep -qE '\s0.0.0.0:80\s' || netstat -tuln | grep -qE ':::80\s'; then
     echo "Error: Port 80 is already in use by another service."
     exit 1
@@ -86,6 +94,10 @@ echo "Nginx configured to listen on port 80."
 # Enable the default site by creating a symbolic link
 echo "Enabling the default site..."
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Test the Nginx configuration
+echo "Testing Nginx configuration..."
+sudo nginx -t
 
 # Reload Nginx to apply changes
 echo "Reloading Nginx..."
