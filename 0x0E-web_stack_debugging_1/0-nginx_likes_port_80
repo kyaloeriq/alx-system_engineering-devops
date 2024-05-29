@@ -7,17 +7,22 @@ if ! command -v nginx &> /dev/null; then
     exit 1
 fi
 
-# Check if port 80 is already in use
+# Stop Nginx service if it's running
+echo "Stopping Nginx service if it's running..."
+sudo service nginx stop
+echo "Nginx service stopped."
+
+# Ensure no service is using port 80
 echo "Checking if port 80 is in use..."
 if sudo lsof -i:80 &> /dev/null; then
     echo "Port 80 is in use. Stopping any processes using port 80..."
-    sudo fuser -k 80/tcp
+    sudo lsof -i:80 -t | xargs -r sudo kill -9
     echo "Processes using port 80 stopped."
 fi
 
-# Check if port 80 is already in use
-if netstat -tuln | grep -qE '\s0.0.0.0:80\s' || netstat -tuln | grep -qE ':::80\s'; then
-    echo "Error: Port 80 is already in use by another service."
+echo "Verifying port 80 is not in use..."
+if ss -tuln | grep -q ':80\s'; then
+    echo "Error: Port 80 is still in use by another service."
     exit 1
 fi
 
@@ -67,7 +72,7 @@ Commercial support is available at
 </body>
 </html>'
 
-# Write the default content to the file if it does not exist or does not contain the expected content
+# Write the default content to the file
 echo "Writing default Nginx index page..."
 echo "$default_content" | sudo tee "$default_page" > /dev/null
 echo "Default Nginx index page written."
