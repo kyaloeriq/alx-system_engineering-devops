@@ -26,6 +26,11 @@ sudo rm -f /etc/nginx/sites-enabled/*
 sudo rm -f /etc/nginx/sites-available/*
 echo "Existing custom configurations removed."
 
+# Remove any existing HTML files in the web root
+echo "Removing existing files in the web root..."
+sudo rm -f /var/www/html/*
+echo "Existing files in the web root removed."
+
 # Ensure the default Nginx index page is present and contains the expected content
 default_page='/var/www/html/index.nginx-debian.html'
 default_content='<!DOCTYPE html>
