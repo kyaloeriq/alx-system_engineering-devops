@@ -1,16 +1,11 @@
 #!/usr/bin/python3
-"""
-Module that queries the Reddit API and returns the number of subscribers for a given subreddit
-"""
 import requests
-import sys
-
 
 def number_of_subscribers(subreddit):
     """
     Queries the Reddit API and returns the number of subscribers for a given subreddit
     """
-    url = fhttps://www.reddit.com/r/{subreddit}/about.json
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {
         'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
     }
@@ -30,8 +25,12 @@ def number_of_subscribers(subreddit):
             print(f"Error: Received status code {response.status_code} for subreddit {subreddit}")
             return 0
     except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")  # e.g., 404 error
-        return 0
+        if http_err.response.status_code == 404:
+            # Invalid subreddit
+            return 0
+        else:
+            print(f"HTTP error occurred: {http_err}")
+            return 0
     except requests.exceptions.ConnectionError as conn_err:
         print(f"Connection error occurred: {conn_err}")
         return 0
@@ -43,11 +42,8 @@ def number_of_subscribers(subreddit):
         return 0
 
 
+# Example usage:
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python script.py <subreddit_name>")
-        sys.exit(1)
-
-    subreddit_name = sys.argv[1]
+    subreddit_name = "python"
     subscribers = number_of_subscribers(subreddit_name)
     print(f"Number of subscribers in r/{subreddit_name}: {subscribers}")
