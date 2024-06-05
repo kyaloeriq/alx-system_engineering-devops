@@ -4,13 +4,17 @@ Queries the Reddit API to get the number of subscribers for a given subreddit
 """
 import requests
 
+
 def number_of_subscribers(subreddit):
     """
-    Queries the Reddit API to get the number of subscribers for a given subreddit
+    Queries Reddit API for the number of subscribers for a given subreddit
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'}
-    
+    headers = {
+            'User-Agent':
+            'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
+            }
+
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         response.raise_for_status()
@@ -19,7 +23,9 @@ def number_of_subscribers(subreddit):
             data = response.json()
             return data['data']['subscribers']
         else:
-            print(f"Error: Received status code {response.status_code} for subreddit {subreddit}")
+            print(f"Error: Received status code {
+                    response.status_code
+                    } for subreddit {subreddit}")
             return 0
     except requests.exceptions.HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")  # e.g., 404 error
