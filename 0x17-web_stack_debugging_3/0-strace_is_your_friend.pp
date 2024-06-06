@@ -4,9 +4,9 @@ package { 'apache2':
 }
 
 service { 'apache2':
-  ensure     => running,
-  enable     => true,
-  subscribe  => File['/var/www/html/index.html'],
+  ensure    => running,
+  enable    => true,
+  subscribe => File['/var/www/html/index.html'],
 }
 
 # Ensure the web root directory exists
