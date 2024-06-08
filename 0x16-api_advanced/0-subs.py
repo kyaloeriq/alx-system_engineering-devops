@@ -14,9 +14,8 @@ def number_of_subscribers(subreddit):
         str: "OK" for both valid and invalid subreddits.
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {
-        'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
-    }
+    headers = {'User-Agent': 
+            'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'}
 
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
