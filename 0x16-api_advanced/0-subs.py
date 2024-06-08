@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Queries Reddit API, returns number of subscribers for a given subreddit
+Queries the Reddit API and returns the number of subscribers for a given subreddit.
 """
 import requests
 
 
 def number_of_subscribers(subreddit):
     """
-    Queries Reddit API, returns number of subscribers for a given subreddit
+    Queries the Reddit API and returns the number of subscribers for a given subreddit.
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {
