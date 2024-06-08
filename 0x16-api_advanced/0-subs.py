@@ -1,22 +1,19 @@
 #!/usr/bin/python3
 """
-Queries the Reddit API and returns the number of subscribers for a given subreddit.
+Queries the Reddit API and returns the number of subscribers
 """
 import requests
 
+
 def number_of_subscribers(subreddit):
     """
-    Queries the Reddit API and returns the number of subscribers for a given subreddit.
-    
-    Parameters:
-        subreddit (str): The name of the subreddit to query.
-    
-    Returns:
-        str: "OK" for both valid and invalid subreddits.
+    Queries the Reddit API and returns the number of subscribers
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {
-        'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
+        'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (
+        by /u/yourusername
+        )'
     }
 
     try:
