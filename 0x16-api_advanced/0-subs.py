@@ -4,11 +4,12 @@ Queries the Reddit API and returns the number of subscribers for a given subredd
 """
 import requests
 
+
 def number_of_subscribers(subreddit):
     """
     Queries the Reddit API and returns the number of subscribers for a given subreddit.
     Parameters:
-        subreddit (str): The name of the subreddit to query.    
+        subreddit (str): The name of the subreddit to query.
     Returns:
         str: "OK" for both valid and invalid subreddits.
     """
@@ -45,4 +46,3 @@ if __name__ == "__main__":
 
     subreddit_name = "nonexistingsubreddit1234567890"
     print(number_of_subscribers(subreddit_name))
-
