@@ -1,3 +1,7 @@
+# Module: nginx_optimization
+# Class: nginx_optimization
+# This class installs and configures Nginx with performance optimizations.
+
 class nginx_optimization {
 
   # Ensure the Nginx package is installed
@@ -7,9 +11,9 @@ class nginx_optimization {
 
   # Ensure the Nginx service is running and enabled
   service { 'nginx':
-    ensure     => running,
-    enable     => true,
-    subscribe  => File['/etc/nginx/nginx.conf'],
+    ensure    => running,
+    enable    => true,
+    subscribe => File['/etc/nginx/nginx.conf'],
   }
 
   # Configure Nginx with optimized settings
