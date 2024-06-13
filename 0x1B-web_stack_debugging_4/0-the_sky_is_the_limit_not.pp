@@ -1,7 +1,4 @@
-# Module: nginx_optimization
-# Class: nginx_optimization
-# This class installs and configures Nginx with performance optimizations.
-
+# nginx_optimization/manifests/init.pp
 class nginx_optimization {
 
   # Ensure the Nginx package is installed
@@ -85,6 +82,3 @@ keepalive_requests 100;
   }
 
 }
-
-# Include the nginx_optimization class in the main manifest
-include nginx_optimization
