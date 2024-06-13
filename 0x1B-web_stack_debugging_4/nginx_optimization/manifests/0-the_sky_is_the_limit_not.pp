@@ -1,6 +1,5 @@
 # nginx_optimization/manifests/init.pp
 class nginx_optimization {
-
   # Ensure the Nginx package is installed
   package { 'nginx':
     ensure => installed,
