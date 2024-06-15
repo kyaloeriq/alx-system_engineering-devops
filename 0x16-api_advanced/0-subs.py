@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Queries the Reddit API and returns the number of subscribers for a given subreddit.
+Queries Reddit API, returns no. of subscribers for a given subreddit.
 """
 import requests
 
 
 def number_of_subscribers(subreddit):
     """
-    Queries the Reddit API and returns the number of subscribers for a given subreddit.
+    Queries Reddit API, returns no. of subscribers for a given subreddit.
     Parameters:
         subreddit (str): The name of the subreddit to query.
     Returns:
@@ -15,7 +15,9 @@ def number_of_subscribers(subreddit):
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {
-        'User-Agent': 'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
+        'User-Agent': (
+            'python:subreddit.subscriber.counter:v1.0 (by /u/yourusername)'
+        )
     }
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
@@ -37,6 +39,7 @@ def number_of_subscribers(subreddit):
         return "OK"
     except requests.exceptions.RequestException:
         return "OK"
+
 
 # Example usage:
 if __name__ == "__main__":
