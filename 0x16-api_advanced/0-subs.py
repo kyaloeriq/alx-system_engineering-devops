@@ -28,17 +28,17 @@ def number_of_subscribers(subreddit):
             if 'data' in data and 'subscribers' in data['data']:
                 return data['data']['subscribers']
             else:
-                return "Subreddit not found"
+                return 0
         else:
-            return "Subreddit not found"
+            return 0
     except requests.exceptions.HTTPError:
-        return "Subreddit not found"
+        return 0
     except requests.exceptions.ConnectionError:
-        return "Connection error"
+        return 0
     except requests.exceptions.Timeout:
-        return "Request timed out"
+        return 0
     except requests.exceptions.RequestException:
-        return "An error occurred"
+        return 0
 
 
 # Example usage:
