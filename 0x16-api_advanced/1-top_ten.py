@@ -1,15 +1,13 @@
 #!/usr/bin/python3
+"""
+module provides function to query the Reddit API and print titles of the first 10 hot posts for a given subreddit
+"""
 import requests
+
 
 def top_ten(subreddit):
     """
-    Queries Reddit API and prints the titles of the first 10 hot posts for a given subreddit.
-    
-    Parameters:
-        subreddit (str): The name of the subreddit to query.
-    
-    Prints:
-        Titles of the first 10 hot posts, or None if the subreddit is invalid.
+    Queries Reddit API, prints titles of the first 10 hot posts for a given subreddit
     """
     url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
     headers = {
@@ -39,6 +37,7 @@ def top_ten(subreddit):
         print(None)
     except requests.exceptions.RequestException:
         print(None)
+
 
 # Example usage:
 if __name__ == "__main__":
