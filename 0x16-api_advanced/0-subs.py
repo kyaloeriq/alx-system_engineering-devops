@@ -26,19 +26,19 @@ def number_of_subscribers(subreddit):
         if response.status_code == 200:
             data = response.json()
             if 'data' in data and 'subscribers' in data['data']:
-                return "OK"
+                return data['data']['subscribers']
             else:
-                return "OK"
+                return "Subreddit not found"
         else:
-            return "OK"
+            return "Subreddit not found"
     except requests.exceptions.HTTPError:
-        return "OK"
+        return "Subreddit not found"
     except requests.exceptions.ConnectionError:
-        return "OK"
+        return "Connection error"
     except requests.exceptions.Timeout:
-        return "OK"
+        return "Request timed out"
     except requests.exceptions.RequestException:
-        return "OK"
+        return "An error occurred"
 
 
 # Example usage:
