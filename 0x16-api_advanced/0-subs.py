@@ -39,12 +39,3 @@ def number_of_subscribers(subreddit):
         return 0
     except requests.exceptions.RequestException:
         return 0
-
-
-# Example usage:
-if __name__ == "__main__":
-    subreddit_name = "python"
-    print(number_of_subscribers(subreddit_name))
-
-    subreddit_name = "nonexistingsubreddit1234567890"
-    print(number_of_subscribers(subreddit_name))
