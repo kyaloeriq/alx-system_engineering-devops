@@ -40,12 +40,3 @@ def top_ten(subreddit):
         print(None)
     except requests.exceptions.RequestException:
         print(None)
-
-
-# Example usage:
-if __name__ == "__main__":
-    subreddit_name = "python"
-    top_ten(subreddit_name)
-
-    subreddit_name = "nonexistingsubreddit1234567890"
-    top_ten(subreddit_name)
