@@ -1,0 +1,10 @@
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/number_odd_or_even/<int:n>')
+def number_odd_or_even(n):
+    return render_template('6-number_odd_or_even.html', n=n, odd_or_even="odd" if n % 2 else "even")
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)
