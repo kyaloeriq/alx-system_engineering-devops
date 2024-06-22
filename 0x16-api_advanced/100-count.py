@@ -73,7 +73,6 @@ def count_words(subreddit, word_list, after=None, word_count=None):
 def print_word_counts(word_count):
     """
     Prints the word counts in the specified format.
-    
     Parameters:
         word_count (Counter): A Counter object with keyword occurrences.
     """
