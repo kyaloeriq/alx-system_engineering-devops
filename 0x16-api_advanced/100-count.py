@@ -3,24 +3,25 @@
 Queries the Reddit API, parses the title of all hot articles
 """
 
-import requests
 from collections import Counter
+import requests
+
 
 def count_words(subreddit, word_list, after=None, word_count=None):
     """
-    Queries the Reddit API recursively and counts the occurrences of given keywords
+    Queries Reddit API recursively, counts the occurrences of given keywords
     Parameters:
         subreddit (str): The name of the subreddit to query.
         word_list (list): The list of keywords to count.
         after (str): The 'after' parameter for pagination.
         word_count (Counter): Counter to accumulate word occurrences.
     Returns:
-        Counter: A Counter object with keyword occurrences if the subreddit is valid.
+        Counter: A Counter object with keyword occurrences if the subreddit
         None: If the subreddit is invalid or no results are found.
     """
     if word_count is None:
         word_count = Counter()
-    
+
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {
         'User-Agent': (
@@ -30,7 +31,9 @@ def count_words(subreddit, word_list, after=None, word_count=None):
     params = {'after': after} if after else {}
 
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(
+                url, headers=headers, params=params, allow_redirects=False
+                )
         response.raise_for_status()
 
         if response.status_code != 200:
@@ -66,6 +69,7 @@ def count_words(subreddit, word_list, after=None, word_count=None):
     except requests.exceptions.RequestException:
         return None
 
+
 def print_word_counts(word_count):
     """
     Prints the word counts in the specified format.
@@ -73,7 +77,9 @@ def print_word_counts(word_count):
     Parameters:
         word_count (Counter): A Counter object with keyword occurrences.
     """
-    sorted_word_count = sorted(word_count.items(), key=lambda item: (-item[1], item[0]))
+    sorted_word_count = sorted(
+            word_count.items(), key=lambda item: (-item[1], item[0])
+            )
     for word, count in sorted_word_count:
         if count > 0:
             print(f"{word}: {count}")
