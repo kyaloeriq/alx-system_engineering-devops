@@ -1,27 +1,30 @@
 #!/usr/bin/python3
 """
-Queries the Reddit API and returns a list of titles of all hot articles for a given subreddit.
+Queries the Reddit API, parses the title of all hot articles
 """
 
 import requests
+from collections import Counter
 
-def recurse(subreddit, hot_list=[], after=None):
+def count_words(subreddit, word_list, after=None, word_count=None):
     """
-    Queries the Reddit API recursively and returns a list of titles of all hot articles for a given subreddit.
-    
+    Queries the Reddit API recursively and counts the occurrences of given keywords
     Parameters:
         subreddit (str): The name of the subreddit to query.
-        hot_list (list): The list to accumulate titles of hot articles.
+        word_list (list): The list of keywords to count.
         after (str): The 'after' parameter for pagination.
-        
+        word_count (Counter): Counter to accumulate word occurrences.
     Returns:
-        list: A list of titles of hot articles if the subreddit is valid.
+        Counter: A Counter object with keyword occurrences if the subreddit is valid.
         None: If the subreddit is invalid or no results are found.
     """
+    if word_count is None:
+        word_count = Counter()
+    
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {
         'User-Agent': (
-            'python:subreddit.hot.article.fetcher:v1.0 (by /u/yourusername)'
+            'python:subreddit.hot.article.word.counter:v1.0 (by /u/yourusername)'
         )
     }
     params = {'after': after} if after else {}
@@ -30,7 +33,6 @@ def recurse(subreddit, hot_list=[], after=None):
         response = requests.get(url, headers=headers, params=params, allow_redirects=False)
         response.raise_for_status()
 
-        # If the status code is not 200, return None
         if response.status_code != 200:
             return None
 
@@ -40,17 +42,20 @@ def recurse(subreddit, hot_list=[], after=None):
 
         children = data['data']['children']
         if not children:
-            return None if not hot_list else hot_list
+            return None if not word_count else word_count
 
         for child in children:
-            hot_list.append(child['data']['title'])
+            title = child['data']['title'].lower()
+            words = title.split()
+            for word in word_list:
+                lower_word = word.lower()
+                word_count[lower_word] += words.count(lower_word)
 
-        # Check if there is a next page
         after = data['data'].get('after')
         if after:
-            return recurse(subreddit, hot_list, after)
+            return count_words(subreddit, word_list, after, word_count)
         else:
-            return hot_list
+            return word_count
 
     except requests.exceptions.HTTPError:
         return None
@@ -61,14 +66,24 @@ def recurse(subreddit, hot_list=[], after=None):
     except requests.exceptions.RequestException:
         return None
 
-# Example usage
+def print_word_counts(word_count):
+    """
+    Prints the word counts in the specified format.
+    
+    Parameters:
+        word_count (Counter): A Counter object with keyword occurrences.
+    """
+    sorted_word_count = sorted(word_count.items(), key=lambda item: (-item[1], item[0]))
+    for word, count in sorted_word_count:
+        if count > 0:
+            print(f"{word}: {count}")
+
+
 if __name__ == "__main__":
     subreddit_name = "python"
-    hot_titles = recurse(subreddit_name)
-    if hot_titles is not None:
-        print(f"Titles of hot articles in r/{subreddit_name}:")
-        for title in hot_titles:
-            print(title)
+    keywords = ["Python", "javascript", "java", "C++", "java", "JavaScript"]
+    word_count = count_words(subreddit_name, keywords)
+    if word_count:
+        print_word_counts(word_count)
     else:
         print(f"Subreddit {subreddit_name} is invalid or has no hot articles.")
-
