@@ -1,19 +1,18 @@
 #!/usr/bin/python3
 """
-Queries the Reddit API and returns a list of titles of all hot articles for a given subreddit.
+Queries Reddit API, returns a list of titles of all hot articles
 """
 
 import requests
 
+
 def recurse(subreddit, hot_list=[], after=None):
     """
-    Queries the Reddit API recursively and returns a list of titles of all hot articles for a given subreddit.
-    
+    Queries Reddit API recursively, returns list of titles of all hot articles
     Parameters:
         subreddit (str): The name of the subreddit to query.
         hot_list (list): The list to accumulate titles of hot articles.
         after (str): The 'after' parameter for pagination.
-        
     Returns:
         list: A list of titles of hot articles if the subreddit is valid.
         None: If the subreddit is invalid or no results are found.
@@ -27,7 +26,9 @@ def recurse(subreddit, hot_list=[], after=None):
     params = {'after': after} if after else {}
 
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(
+                url, headers=headers, params=params, allow_redirects=False
+                )
         response.raise_for_status()
 
         # If the status code is not 200, return None
@@ -71,4 +72,3 @@ if __name__ == "__main__":
             print(title)
     else:
         print(f"Subreddit {subreddit_name} is invalid or has no hot articles.")
-
