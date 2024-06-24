@@ -6,7 +6,7 @@ package { 'Flask':
 }
 # Add environment path for flask executable
 file { '/etc/profile.d/flask.sh':
-  ensure  => present,
-  content => "export PATH=$PATH:/usr/local/bin\n",
-  mode    => '0644',
+  ensure   => present,
+  content  => "export PATH=$PATH:/usr/local/bin\n",
+  mode     => '0644',
 }
